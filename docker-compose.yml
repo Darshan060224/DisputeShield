@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: mysql://dispute_user:dispute_pass@db:3306/disputeshield
+      REDIS_URL: redis://redis:6379
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-rzp_test_disputeshield}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-disputeshield_key_secret_2026}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-disputeshield_secret_key_2026}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-https://darshan-23csa19-0390-resource.openai.azure.com/openai/v1}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: disputeshield
+      MYSQL_USER: dispute_user
+      MYSQL_PASSWORD: dispute_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
+  redis_data:
