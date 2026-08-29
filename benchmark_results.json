@@ -1,0 +1,25 @@
+{
+  "corpus": {
+    "name": "Synthetic held-out regression corpus",
+    "scenarioCount": 24,
+    "version": "2026-08-24.1",
+    "status": "synthetic_not_live_not_a_bank_outcome_predictor"
+  },
+  "measurements": [
+    {
+      "target": "Fulfilment intervention signal",
+      "precision": 100,
+      "recall": 100,
+      "f1": 100,
+      "confusionMatrix": { "truePositive": 7, "falsePositive": 0, "trueNegative": 17, "falseNegative": 0 }
+    },
+    {
+      "target": "Evidence-gap detection",
+      "precision": 100,
+      "recall": 100,
+      "f1": 100,
+      "confusionMatrix": { "truePositive": 13, "falsePositive": 0, "trueNegative": 11, "falseNegative": 0 }
+    }
+  ],
+  "definition": "Reproducible output from the versioned deterministic benchmark runner. These fixed authored fixtures measure rule agreement only and do not predict fraud, live merchant losses, or bank outcomes."
+}
