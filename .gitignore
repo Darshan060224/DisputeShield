@@ -4,10 +4,9 @@ node_modules/
 .pnpm-store/
 
 # Build and distribution outputs
-dist/
 build/
 *.dist
-client/dist/
+
 
 # Environment and sensitive credential files
 .env
